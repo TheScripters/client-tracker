@@ -21,14 +21,14 @@ if (!$users->logged_in()) {
 }
 
 // Add a new client (uncomment to test)
-//$newClient = $client->newClient('GCNA','webmaster@gcna.info','0');
+//$newClient = $client->newClient('John Smith','john.smith@mail.com','0');
 
 // Edit Client Info (uncomment both lines to test)
-//$data = $client->gatherData(6,'GCNA','webmaster@gcna.info','','Phoenix','Arizona','0','0');
-//$client->editClient(6,$data);
+//$data = $client->gatherData(1,'John Smith','john.smith@mail.com','','Phoenix','Arizona','0','0');
+//$client->editClient(1,$data);
 
 // View a client by name
-//$viewClient = $client->viewClientByName('Daniel Champagne');
+//$viewClient = $client->viewClientByName('John Smith');
 
 //echo "<pre>";
 //print_r($viewClient);
