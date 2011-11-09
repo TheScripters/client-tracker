@@ -33,8 +33,18 @@ class users {
     }
   }
   
+  public function log_in() {
+    $query = $mdb2->query("UPDATE clients_sessions SET data = 'logged_in' WHERE sessionId = '".$this->sessionId."'");
+  }
+  
   private function sessionId() {
     return $_REQUEST['PHPSESSID'];
+  }
+  
+  public function user_name($id) {
+    $query = $mdb2->query("SELECT clientName FROM clients_info WHERE clientId = '".$id."'");
+    $userId = $query->fetchOne();
+    return $userId;
   }
 }
 

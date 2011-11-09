@@ -11,17 +11,24 @@ $head->header_inc($title,"Index");
 
 if (!$users->logged_in()) {
   include "includes/login.inc.php";
+} else {
+  if ($_SESSION['clientId'] == 0) {
+    $user = "Admin";
+  } else {
+    $user = $users->user_name($_SESSION['clientId']);
+  }
+  echo "Welcome, ".$user."!";
 }
 
 // Add a new client (uncomment to test)
-//$newClient = $client->newClient('John Smith','john.smith@mail.com','0');
+//$newClient = $client->newClient('GCNA','webmaster@gcna.info','0');
 
 // Edit Client Info (uncomment both lines to test)
-//$data = $client->gatherData(1,'John Smith','john.smith@mail.com','','Phoenix','Arizona','0','0');
-//$client->editClient(1,$data);
+//$data = $client->gatherData(6,'GCNA','webmaster@gcna.info','','Phoenix','Arizona','0','0');
+//$client->editClient(6,$data);
 
 // View a client by name
-//$viewClient = $client->viewClientByName('John Smith');
+//$viewClient = $client->viewClientByName('Daniel Champagne');
 
 //echo "<pre>";
 //print_r($viewClient);
