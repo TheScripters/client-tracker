@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `clientLicense` (
   `date` int(12) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`,`software`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `clients_info` (
   PRIMARY KEY (`clientId`),
   UNIQUE KEY `clientHash` (`clientHash`),
   KEY `clientUserName` (`clientUserName`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -101,3 +101,12 @@ CREATE TABLE IF NOT EXISTS `client_config` (
   `value` varchar(255) NOT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `client_config`
+--
+
+INSERT INTO `client_config` (`id`, `value`) VALUES
+('ssl', 'yes'),
+('title', 'Client Tracker Database'),
+('admin_password', '$2a$08$FKT28xzNzFI.hFkPkasfo.c6wTH.Qa6z30unwoBRRITf78EP4eK5m');
