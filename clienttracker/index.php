@@ -1,5 +1,8 @@
 <?php
-// (c) 2010 TheScripters.com
+/* Client Tracker
+**
+** (c) 2010-2011 TheScripters.com
+**********************************/
 
 require "common.php";
 
@@ -9,7 +12,7 @@ $account = New accounts();
 
 $head->header_inc($title,"Index");
 
-if (!$users->logged_in()) {
+if ($users->logged_in() === false) {
   include "includes/login.inc.php";
 } else {
   if ($_SESSION['clientId'] == 0) {
@@ -18,6 +21,7 @@ if (!$users->logged_in()) {
     $user = $users->user_name($_SESSION['clientId']);
   }
   echo "Welcome, ".$user."!";
+  echo "&nbsp;<a href=\"login.php?mode=logout\">Log out</a>";
 }
 
 // Add a new client (uncomment to test)

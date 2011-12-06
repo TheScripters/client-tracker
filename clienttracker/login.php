@@ -29,10 +29,13 @@ if ($users->logged_in() === false && !isset($_GET['mode'])) {
         $_SESSION['logged_in'] = "true";
         $_SESSION['clientId'] = $user['clientId'];
         header("Location: index.php");
+      } else {
+        $_SESSION['message'] = "Username/Password incorrect.";
+        header("Location: index.php");
       }
     } else {
       $query = $mdb2->query("SELECT value AS admin_pw FROM client_config WHERE id = 'admin_password'");
-      $user = $query->fetchOne();
+      $user = $query->fetchRow();
       $t_hasher = new PasswordHash(8, FALSE);
       $hash = $user['admin_pw']; //from database
       $check = $t_hasher->CheckPassword($_REQUEST['pw'], $hash);
@@ -42,10 +45,15 @@ if ($users->logged_in() === false && !isset($_GET['mode'])) {
         $_SESSION['logged_in'] = "true";
         $_SESSION['clientId'] = 0;
         header("Location: index.php");
+      } else {
+        $_SESSION['message'] = "Username/Password incorrect.";
+        header("Location: index.php");
       }
     }
+  } else {
+    $_SESSION['message'] = "Please provide both Username and Password.";
+    header("Location: index.php");
   }
-  
 } elseif ($users->logged_in() === true && $_GET['mode'] == "logout") {
   // Unset variables and redirect to index.php
   $users->logout();

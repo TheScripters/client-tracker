@@ -33,7 +33,7 @@ class users {
       $query = $mdb2->query("SELECT time,ipAddress,data FROM clients_sessions WHERE sessionId = '".$sessionId."'");
       $sessTime = $query->fetchRow();
       $now = time();
-      if (($now-$sessTime['time']) <= 1800 && $sessTime['ipAddress'] == $_SERVER['REMOTE_ADDR']) {
+      if (($now-$sessTime['time']) <= 1800 && $sessTime['ipaddress'] == $_SERVER['REMOTE_ADDR']) {
         $update = $mdb2->query("UPDATE clients_sessions SET time = '".$now."' WHERE sessionId = '".$sessionId."'");
         if ($sessTime['data'] = "logged_in") {
           return true;
@@ -43,11 +43,16 @@ class users {
           return false;
         }
       } else {
+        $_SESSION['message'] = "Something must have screwed up with comparing the IP Address..";
         // Remove active session from database, and create a new session.
         $query = $mdb2->query("DELETE FROM clients_sessions WHERE sessionId = '".$sessionId."'");
+        if (PEAR::isError($mdb2)) {
+          die($mdb2->getMessage());
+        }
         session_regenerate_id();
         session_destroy();
         unset($_SESSION);
+        session_id($sessionId);
         session_start();
         return false;
       }
@@ -58,7 +63,13 @@ class users {
   }
   
   public function log_in() {
-    $query = $mdb2->query("UPDATE clients_sessions SET data = 'logged_in' WHERE sessionId = '".$this->sessionId()."'");
+    global $mdb2;
+    
+    $sessionId = $this->sessionId();
+    $query = $mdb2->query("UPDATE clients_sessions SET data = 'logged_in' WHERE sessionId = '".$sessionId."'");
+    if (PEAR::isError($mdb2)) {
+      die($mdb2->getMessage());
+    }
   }
   
   private function sessionId() {
@@ -66,17 +77,23 @@ class users {
   }
   
   public function user_name($id) {
+    global $mdb2;
+    
     $query = $mdb2->query("SELECT clientName FROM clients_info WHERE clientId = '".$id."'");
     $userId = $query->fetchOne();
     return $userId;
   }
   
   public function logout() {
+    global $mdb2;
+    
+    $sessionId = $this->sessionId();
     // Remove active session and create a new session.
     $query = $mdb2->query("DELETE FROM clients_sessions WHERE sessionId = '".$sessionId."'");
     session_regenerate_id();
     session_destroy();
     unset($_SESSION);
+    session_id($sessionId);
     session_start();
   }
 }
