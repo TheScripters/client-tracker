@@ -109,4 +109,6 @@ CREATE TABLE IF NOT EXISTS `client_config` (
 INSERT INTO `client_config` (`id`, `value`) VALUES
 ('ssl', 'no'),
 ('title', 'Client Tracker Database'),
-('admin_password', '$2a$08$FKT28xzNzFI.hFkPkasfo.c6wTH.Qa6z30unwoBRRITf78EP4eK5m');
+('admin_password', '$2a$08$FKT28xzNzFI.hFkPkasfo.c6wTH.Qa6z30unwoBRRITf78EP4eK5m'),
+('reCaptcha_public', ''), -- Get your own key at google.com/recaptcha
+('reCaptcha_private', ''); -- Your own key from google.com/recaptcha
