@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 09, 2011 at 04:34 PM
+-- Generation Time: Feb 10, 2012 at 01:37 AM
 -- Server version: 5.1.46
 -- PHP Version: 5.3.8
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `clients`
+-- Database: `thescrip_clients`
 --
 
 -- --------------------------------------------------------
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `clientLicense` (
   `date` int(12) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`,`software`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `clients_info` (
   PRIMARY KEY (`clientId`),
   UNIQUE KEY `clientHash` (`clientHash`),
   KEY `clientUserName` (`clientUserName`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -83,12 +83,17 @@ CREATE TABLE IF NOT EXISTS `clients_info` (
 --
 
 CREATE TABLE IF NOT EXISTS `clients_sessions` (
-  `sessionId` varchar(32) NOT NULL,
-  `time` int(11) NOT NULL,
-  `ipAddress` varchar(20) NOT NULL,
-  `data` tinytext NOT NULL,
-  UNIQUE KEY `sessionId` (`sessionId`,`ipAddress`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `sessionId` int(10) NOT NULL AUTO_INCREMENT,
+  `phpSessionId` varchar(32) NOT NULL,
+  `sessionKey` varchar(15) NOT NULL,
+  `updated` int(10) NOT NULL,
+  `created` int(10) NOT NULL,
+  `loggedIn` tinyint(1) NOT NULL,
+  `userId` int(10) NOT NULL,
+  `userAgent` varchar(255) NOT NULL,
+  `ipAddress` varchar(15) NOT NULL,
+  PRIMARY KEY (`sessionId`,`phpSessionId`,`sessionKey`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -111,4 +116,9 @@ INSERT INTO `client_config` (`id`, `value`) VALUES
 ('title', 'Client Tracker Database'),
 ('admin_password', '$2a$08$FKT28xzNzFI.hFkPkasfo.c6wTH.Qa6z30unwoBRRITf78EP4eK5m'),
 ('reCaptcha_public', ''), -- Get your own key at google.com/recaptcha
-('reCaptcha_private', ''); -- Your own key from google.com/recaptcha
+('reCaptcha_private', ''), -- Your own key from google.com/recaptcha
+('paypal_id', ''),
+('paypal_api_username', ''),
+('paypal_api_password', ''),
+('paypal_api_signature', ''),
+('ip_sensitivity','3');
