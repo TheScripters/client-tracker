@@ -11,9 +11,9 @@ require "includes/header_footer.php";
 
 require "includes/clients.php";
 require "includes/accounts.php";
-require "includes/users.php";
+require "includes/session.php";
 
-$users = new users();
+$users = new sessionHandler();
 
 $time = time() - 1860;
 $updates = $mdb2->query("DELETE FROM clients_sessions WHERE time < '".$time."'");

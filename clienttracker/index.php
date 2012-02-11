@@ -12,7 +12,7 @@ $account = New accounts();
 
 $head->header_inc($title,"Index");
 
-if ($users->logged_in() === false) {
+if ($users->logged_in() !== true) {
   include "includes/login.inc.php";
 } else {
   if ($_SESSION['clientId'] == 0) {
