@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.4
+-- version 3.4.10.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 10, 2012 at 01:37 AM
+-- Generation Time: Feb 23, 2012 at 04:51 PM
 -- Server version: 5.1.46
 -- PHP Version: 5.3.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -33,24 +34,29 @@ CREATE TABLE IF NOT EXISTS `accounts_info` (
   `clientRenewDate` bigint(13) NOT NULL DEFAULT '0',
   `clientPayment` double(5,2) NOT NULL DEFAULT '0.00',
   `clientTerms` decimal(3,2) NOT NULL DEFAULT '0.00',
-  KEY `clientId` (`clientId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  INDEX `clientId` (`clientId`)
+  FOREIGN KEY (clientId) REFERENCES clients_info (clientId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `clientLicense`
 --
-
 CREATE TABLE IF NOT EXISTS `clientLicense` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` int(10) NOT NULL,
+  `clientId` bigint(13) NOT NULL,
   `software` varchar(255) NOT NULL,
   `key` varchar(255) NOT NULL,
   `date` int(12) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `userId` (`userId`,`software`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+  INDEX `clientId` (`clientId`)
+  FOREIGN KEY clientId REFERENCES clients_info (clientId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -74,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `clients_info` (
   PRIMARY KEY (`clientId`),
   UNIQUE KEY `clientHash` (`clientHash`),
   KEY `clientUserName` (`clientUserName`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -89,11 +95,15 @@ CREATE TABLE IF NOT EXISTS `clients_sessions` (
   `updated` int(10) NOT NULL,
   `created` int(10) NOT NULL,
   `loggedIn` tinyint(1) NOT NULL,
-  `userId` int(10) NOT NULL,
+  `clientId` bigint(13) NOT NULL,
   `userAgent` varchar(255) NOT NULL,
   `ipAddress` varchar(15) NOT NULL,
-  PRIMARY KEY (`sessionId`,`phpSessionId`,`sessionKey`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`sessionId`,`phpSessionId`,`sessionKey`),
+  INDEX `clientId` (`clientId`)
+  FOREIGN KEY (clientId) REFERENCES clients_info (clientId)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -105,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `client_config` (
   `id` varchar(25) NOT NULL,
   `value` varchar(255) NOT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `client_config`
@@ -121,4 +131,5 @@ INSERT INTO `client_config` (`id`, `value`) VALUES
 ('paypal_api_username', ''),
 ('paypal_api_password', ''),
 ('paypal_api_signature', ''),
+('site_url','http://www.example.com'),
 ('ip_sensitivity','3');
